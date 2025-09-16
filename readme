@@ -1,0 +1,200 @@
+# ZC Data Manager Plugin - Installation & Setup Guide
+
+## 🚀 Quick Start
+
+### Installation Steps:
+
+1. **Upload Files**: Copy all plugin files to `/wp-content/plugins/zc-data-manager/`
+2. **Activate Plugin**: Go to WordPress Admin > Plugins > Activate "ZC Data Manager"
+3. **Configure API Keys**: Visit Data Manager > Data Sources to add API keys
+4. **Add First Series**: Go to Data Manager > Add Series to create your first data series
+5. **Enable Auto-Updates**: Check Settings > Automation to enable automatic data updates
+
+## 📁 Required File Structure
+
+```
+wp-content/plugins/zc-data-manager/
+├── zc-data-manager.php
+├── includes/
+│   ├── class-database.php
+│   ├── class-data-collector.php  
+│   ├── class-cron-manager.php
+│   └── sources/
+│       ├── class-source-fred.php
+│       ├── class-source-worldbank.php
+│       ├── class-source-yahoo.php
+│       ├── class-source-dbnomics.php
+│       ├── class-source-eurostat.php
+│       ├── class-source-alphavantage.php
+│       └── class-source-csv.php
+├── admin/
+│   ├── dashboard.php
+│   ├── add-series.php
+│   ├── series-list.php
+│   ├── data-sources.php
+│   ├── settings.php
+│   └── logs.php
+├── api/
+│   └── data-functions.php
+├── assets/
+│   ├── css/
+│   │   └── admin.css
+│   └── js/
+│       └── admin.js
+├── developer-guide.md
+└── readme.md
+```
+
+## 🔧 System Requirements
+
+- **WordPress**: 5.0 or higher
+- **PHP**: 7.4 or higher  
+- **MySQL**: 5.6 or higher
+- **Extensions**: cURL, JSON, MySQLi
+
+## 🔑 API Keys Needed
+
+### Required (for full functionality):
+- **FRED API Key**: Get from [FRED API Registration](https://research.stlouisfed.org/docs/api/api_key.html)
+- **Alpha Vantage API Key**: Get from [Alpha Vantage](https://www.alphavantage.co/support/#api-key)
+
+### Optional:
+- **Quandl API Key**: Get from [Nasdaq Data Link](https://data.nasdaq.com/sign-up)
+
+### No API Key Required:
+- World Bank Open Data
+- Yahoo Finance  
+- DBnomics
+- Eurostat
+- CSV Files
+
+## ⚡ First Setup
+
+### 1. After Activation
+- Plugin creates 3 database tables automatically
+- Sets up default options
+- Schedules cron events for auto-updates
+
+### 2. Configure Data Sources
+1. Go to **Data Manager > Data Sources**
+2. Add your API keys
+3. Test connections using "Test Connection" buttons
+
+### 3. Add Your First Series
+1. Go to **Data Manager > Add Series**
+2. Choose a data source (try World Bank or Yahoo Finance first - no API key needed)
+3. Configure parameters
+4. Test preview
+5. Save series
+
+### 4. Example Series to Try:
+
+**World Bank Examples:**
+- **Name**: US GDP
+- **Source**: World Bank
+- **Indicator**: NY.GDP.MKTP.CD
+- **Country**: US
+
+**Yahoo Finance Examples:**
+- **Name**: Apple Stock Price
+- **Source**: Yahoo Finance  
+- **Symbol**: AAPL
+- **Price Type**: Closing Price
+
+**FRED Examples** (requires API key):
+- **Name**: US Unemployment Rate
+- **Source**: FRED
+- **Series ID**: UNRATE
+
+### 5. Enable Auto-Updates
+1. Go to **Data Manager > Settings > Automation**
+2. Check "Enable automatic data updates"
+3. Verify cron status shows "Working"
+
+## 🎯 Integration with Charts Plugin
+
+### Using Data in Charts Plugin:
+
+```php
+// Get series data
+$data = zc_get_series_data('your-series-slug');
+
+// Create chart shortcode
+[zc_chart series="your-series-slug" type="line" title="My Chart"]
+```
+
+### Available API Functions:
+- `zc_get_series_data($slug)` - Get all data points
+- `zc_get_series_info($slug)` - Get series metadata
+- `zc_get_all_series()` - List all series
+- `zc_search_series($query)` - Search series
+- `zc_series_exists($slug)` - Check if series exists
+
+## 🛠️ Troubleshooting
+
+### Common Issues:
+
+**Database tables not created:**
+- Deactivate and reactivate plugin
+- Check MySQL permissions
+
+**API keys not working:**
+- Verify keys are correct
+- Use "Test Connection" button
+- Check error logs
+
+**Cron not updating data:**
+- Go to Settings > System Info
+- Check "WordPress Cron: Working"
+- Try manual refresh buttons
+
+**Plugin conflicts:**
+- Deactivate other plugins temporarily
+- Check error logs in Logs page
+
+### Debug Mode:
+Add to `wp-config.php`:
+```php
+define('WP_DEBUG', true);
+define('WP_DEBUG_LOG', true);
+```
+
+Check logs in `/wp-content/debug.log`
+
+## 📊 Dashboard Overview
+
+After installation, your dashboard shows:
+
+- **Total Series**: Number of data series
+- **Data Points**: Total observations stored
+- **Recent Errors**: Issues in last 7 days  
+- **Auto Updates**: Status of automatic updates
+
+## 🔄 Auto-Update Schedule
+
+- **Hourly**: Financial data (stocks, forex)
+- **Daily**: Economic data (GDP, inflation, etc.)
+- **Weekly**: Full refresh of all series
+
+## 📈 Charts Plugin Integration
+
+Once data is collected, use with ZC Charts plugin:
+
+1. Install ZC Charts plugin
+2. Use shortcodes in posts/pages
+3. Charts automatically detect available data
+4. Real-time updates from Data Manager
+
+## 🆘 Support
+
+1. Check **Data Manager > Logs** for errors
+2. Use "Test Connection" buttons in Data Sources
+3. Verify system requirements
+4. Check WordPress error logs
+5. Review developer guide for advanced issues
+
+## 🎉 You're Ready!
+
+The plugin is now installed and ready to collect data. Start by adding a few series and watch the data populate your dashboard. The Charts plugin can then use this data to create beautiful visualizations.
+
+Remember to check the Logs page regularly to ensure everything is working smoothly!
